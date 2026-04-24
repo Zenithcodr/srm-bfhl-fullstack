@@ -101,37 +101,3 @@
 }
 ```
 
-## Deployment Steps for Render Backend
-1. Push repository to GitHub.
-2. Create a new Web Service on Render and connect the repository.
-3. Set Root Directory to `backend`.
-4. Build Command: `npm install`
-5. Start Command: `npm start`
-6. Add environment variables in Render:
-   - `USER_ID`
-   - `EMAIL_ID`
-   - `COLLEGE_ROLL_NUMBER`
-   - `PORT` (optional on Render; Render can inject PORT)
-7. Deploy and copy backend base URL.
-
-## Deployment Steps for Vercel Frontend
-1. Import the same repository in Vercel.
-2. Set Root Directory to `frontend`.
-3. Framework preset: Vite.
-4. Add environment variable:
-   - `VITE_API_BASE_URL=<your_render_backend_base_url>`
-5. Deploy and copy frontend URL.
-
-## Final Submission Fields
-1. GitHub Repository URL
-2. Frontend URL
-3. Backend API Base URL without `/bfhl`
-4. Resume link
-
-Backend API Base URL must be submitted without `/bfhl`.
-
-Correct:
-- `https://your-backend.onrender.com`
-
-Wrong:
-- `https://your-backend.onrender.com/bfhl`
