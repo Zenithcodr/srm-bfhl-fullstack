@@ -35,6 +35,11 @@ export default function App() {
 
   const apiUrl = useMemo(() => {
     const base = (import.meta.env.VITE_API_BASE_URL || "").trim().replace(/\/$/, "");
+
+    if (!base) {
+      return "/bfhl";
+    }
+
     return `${base}/bfhl`;
   }, []);
 
@@ -44,6 +49,7 @@ export default function App() {
     setResult(null);
 
     let parsed;
+
     try {
       parsed = JSON.parse(payloadText);
     } catch {
@@ -53,11 +59,6 @@ export default function App() {
 
     if (!parsed || !Array.isArray(parsed.data)) {
       setError('Payload must be in the form: { "data": [] }');
-      return;
-    }
-
-    if (!import.meta.env.VITE_API_BASE_URL) {
-      setError("Missing VITE_API_BASE_URL in frontend environment.");
       return;
     }
 
@@ -98,8 +99,10 @@ export default function App() {
 
       <section className="panel">
         <h2>Input</h2>
+
         <form onSubmit={handleSubmit}>
           <label htmlFor="payload">Request Body (JSON)</label>
+
           <textarea
             id="payload"
             value={payloadText}
@@ -107,10 +110,12 @@ export default function App() {
             rows={12}
             spellCheck={false}
           />
+
           <button type="submit" disabled={loading}>
             {loading ? "Submitting..." : "Submit"}
           </button>
         </form>
+
         {error && <p className="error">{error}</p>}
       </section>
 
@@ -118,15 +123,18 @@ export default function App() {
         <>
           <section className="panel">
             <h2>Summary</h2>
+
             <div className="summary-grid">
               <article className="summary-card">
                 <h3>Total Trees</h3>
                 <p>{result.summary?.total_trees ?? 0}</p>
               </article>
+
               <article className="summary-card">
                 <h3>Total Cycles</h3>
                 <p>{result.summary?.total_cycles ?? 0}</p>
               </article>
+
               <article className="summary-card">
                 <h3>Largest Tree Root</h3>
                 <p>{result.summary?.largest_tree_root || "(none)"}</p>
@@ -136,16 +144,19 @@ export default function App() {
 
           <section className="panel">
             <h2>Hierarchies</h2>
+
             {Array.isArray(result.hierarchies) && result.hierarchies.length > 0 ? (
               <div className="hierarchy-grid">
                 {result.hierarchies.map((item, index) => (
                   <article className="hierarchy-card" key={`${item.root}-${index}`}>
                     <h3>Root: {item.root}</h3>
+
                     {item.has_cycle ? (
                       <p className="cycle-badge">Cycle detected</p>
                     ) : (
                       <>
                         <p>Depth: {item.depth}</p>
+
                         <div className="tree-wrap">
                           <div className="tree-root">{item.root}</div>
                           <TreeBranch node={item.tree?.[item.root] || {}} />
@@ -163,6 +174,7 @@ export default function App() {
           <section className="panel split">
             <article>
               <h2>Invalid Entries</h2>
+
               {Array.isArray(result.invalid_entries) && result.invalid_entries.length > 0 ? (
                 <ul className="chip-list">
                   {result.invalid_entries.map((entry, index) => (
@@ -176,6 +188,7 @@ export default function App() {
 
             <article>
               <h2>Duplicate Edges</h2>
+
               {Array.isArray(result.duplicate_edges) && result.duplicate_edges.length > 0 ? (
                 <ul className="chip-list">
                   {result.duplicate_edges.map((edge) => (
